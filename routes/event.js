@@ -61,11 +61,12 @@ router.post("/", async (req, res) => {
       endTime,
       sessionNotes,
       userId,
+      googleToken
     } = req.body;
+
     console.log(req.body);
 
     const converted = convertTimeTo24HourFormat(time);
-
     const convertedEndTime = convertTimeTo24HourFormat(endTime);
 
     const newEvent = new Event({
@@ -79,11 +80,9 @@ router.post("/", async (req, res) => {
       userId,
     });
 
-    const event = await newEvent.save();
-
-    // Sync with Google Calendar
-    if (req.body.googleToken) {
-      oauth2Client.setCredentials({ access_token: req.body.googleToken });
+    // Sync with Google Calendar if googleToken is provided
+    if (googleToken) {
+      oauth2Client.setCredentials({ access_token: googleToken });
       const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
       const ModifiedStart = new Date(date + "T" + converted);
@@ -104,16 +103,21 @@ router.post("/", async (req, res) => {
         resource: googleEvent,
       });
 
-      event.googleEventId = createdEvent.data.id;
-      await event.save();
+      newEvent.googleEventId = createdEvent.data.id;
     }
 
-    res.json(event);
+    // Save the event to the database after Google Calendar integration
+    const savedEvent = await newEvent.save();
+
+    // Send the saved event details to the user
+    res.json(savedEvent);
+
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(400).json({ error: err.message });
   }
 });
+
 
 router.put("/:id", async (req, res) => {
   try {
