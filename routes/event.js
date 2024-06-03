@@ -223,7 +223,7 @@ router.get("/oauth2callback", async (req, res) => {
     console.log(userInfo);
 
     // Construct redirect URL with user details
-    const redirectUrl = `https://calender-k1vgqdf3e-durgaprasad-2002s-projects.vercel.app/login?access_token=${tokens.access_token}&refresh_token=${tokens.refresh_token}&scope=${tokens.scope}&token_type=${tokens.token_type}&expiry_date=${tokens.expiry_date}&email=${userInfo.email}&name=${userInfo.name}&gid=${userInfo.id}`;
+    const redirectUrl = `https://calenderapp-durgaprasad-2002s-projects.vercel.app/login?access_token=${tokens.access_token}&refresh_token=${tokens.refresh_token}&scope=${tokens.scope}&token_type=${tokens.token_type}&expiry_date=${tokens.expiry_date}&email=${userInfo.email}&name=${userInfo.name}&gid=${userInfo.id}`;
 
     res.redirect(redirectUrl);
   } catch (err) {
