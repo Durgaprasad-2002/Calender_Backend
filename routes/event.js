@@ -62,6 +62,7 @@ router.post("/", async (req, res) => {
       sessionNotes,
       userId,
     } = req.body;
+    console.log(req.body);
 
     const converted = convertTimeTo24HourFormat(time);
 
