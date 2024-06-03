@@ -7,7 +7,7 @@ const axios = require("axios");
 const oauth2Client = new google.auth.OAuth2(
   "1019918519182-bb74on44ac9gg4faq9rsml1tm3gn22pp.apps.googleusercontent.com",
   "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",
-  "http://localhost:5000/api/events/oauth2callback"
+  "https://calender-backend-367p.onrender.com/api/events/oauth2callback"
 );
 
 router.get("/", async (req, res) => {
